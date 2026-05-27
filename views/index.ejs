@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="<%= content.siteSettings.metaDescription %>">
+  <meta name="theme-color" content="#1565C0">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="<%= content.siteSettings.title %>">
+  <meta property="og:description" content="<%= content.siteSettings.metaDescription %>">
+  <meta property="og:type" content="website">
+  <title><%= content.siteSettings.title %></title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- ============ NAVIGATION ============ -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar__container">
+      <a href="#hero" class="navbar__brand">
+        <span class="material-icons navbar__brand-icon">school</span>
+        <span class="navbar__brand-text"><%= content.siteSettings.title %></span>
+      </a>
+
+      <button class="navbar__hamburger" id="hamburger" aria-label="Меню">
+        <span class="navbar__hamburger-line"></span>
+        <span class="navbar__hamburger-line"></span>
+        <span class="navbar__hamburger-line"></span>
+      </button>
+
+      <ul class="navbar__menu" id="navMenu">
+        <li><a href="#about" class="navbar__link" data-section="about">О себе</a></li>
+        <li><a href="#credo" class="navbar__link" data-section="credo">Кредо</a></li>
+        <li><a href="#achievements" class="navbar__link" data-section="achievements">Достижения</a></li>
+        <li><a href="#methods" class="navbar__link" data-section="methods">Методики</a></li>
+        <li><a href="#gallery" class="navbar__link" data-section="gallery">Галерея</a></li>
+        <li><a href="#testimonials" class="navbar__link" data-section="testimonials">Отзывы</a></li>
+        <li><a href="#contacts" class="navbar__link" data-section="contacts">Контакты</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============ HERO SECTION ============ -->
+  <section class="hero" id="hero">
+    <div class="hero__overlay"></div>
+    <div class="hero__particles" id="heroParticles"></div>
+    <div class="hero__content">
+      <div class="hero__photo-wrapper reveal">
+        <% if (content.hero.photo) { %>
+          <img src="<%= content.hero.photo %>" alt="<%= content.hero.name %>" class="hero__photo">
+        <% } else { %>
+          <div class="hero__photo-placeholder">
+            <span class="material-icons">person</span>
+          </div>
+        <% } %>
+      </div>
+      <h1 class="hero__name reveal"><%= content.hero.name %></h1>
+      <p class="hero__title reveal"><%= content.hero.title %></p>
+      <p class="hero__school reveal">
+        <span class="material-icons">location_city</span>
+        <%= content.hero.school %>
+      </p>
+      <% if (content.hero.experience) { %>
+        <p class="hero__experience reveal">
+          <span class="material-icons">workspace_premium</span>
+          Педагогический стаж: <%= content.hero.experience %>
+        </p>
+      <% } %>
+      <% if (content.hero.motto) { %>
+        <p class="hero__motto reveal">&laquo;<%= content.hero.motto %>&raquo;</p>
+      <% } %>
+    </div>
+    <a href="#about" class="hero__scroll-indicator" aria-label="Прокрутить вниз">
+      <span class="material-icons">keyboard_arrow_down</span>
+    </a>
+  </section>
+
+  <!-- ============ ABOUT SECTION ============ -->
+  <section class="section about" id="about">
+    <div class="container">
+      <h2 class="section__title reveal">
+        <span class="section__title-text">О себе</span>
+        <span class="section__title-line"></span>
+      </h2>
+      <div class="about__grid">
+        <div class="about__photo-col reveal">
+          <% if (content.about.photo) { %>
+            <img src="<%= content.about.photo %>" alt="<%= content.hero.name %>" class="about__photo">
+          <% } else { %>
+            <div class="about__photo-placeholder photo-placeholder">
+              <span class="material-icons">person</span>
+            </div>
+          <% } %>
+        </div>
+        <div class="about__text-col reveal">
+          <div class="about__text-content">
+            <p class="about__text"><%= content.about.text %></p>
+
+            <div class="about__details">
+              <% if (content.about.education) { %>
+                <div class="about__detail-item">
+                  <span class="material-icons">school</span>
+                  <div>
+                    <strong>Образование</strong>
+                    <p><%= content.about.education %></p>
+                  </div>
+                </div>
+              <% } %>
+              <% if (content.about.specialization) { %>
+                <div class="about__detail-item">
+                  <span class="material-icons">psychology</span>
+                  <div>
+                    <strong>Специализация</strong>
+                    <p><%= content.about.specialization %></p>
+                  </div>
+                </div>
+              <% } %>
+              <% if (content.about.category) { %>
+                <div class="about__detail-item">
+                  <span class="material-icons">verified</span>
+                  <div>
+                    <strong>Категория</strong>
+                    <p><%= content.about.category %></p>
+                  </div>
+                </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <% if (content.about.highlights && content.about.highlights.length > 0) { %>
+        <div class="about__highlights reveal">
+          <% content.about.highlights.forEach(function(highlight) { %>
+            <div class="highlight-card">
+              <div class="highlight-card__icon-wrapper">
+                <span class="material-icons"><%= highlight.icon %></span>
+              </div>
+              <div class="highlight-card__value counter-value" data-target="<%= highlight.value %>"><%= highlight.value %></div>
+              <div class="highlight-card__label"><%= highlight.label %></div>
+            </div>
+          <% }); %>
+        </div>
+      <% } %>
+    </div>
+  </section>
+
+  <!-- ============ CREDO SECTION ============ -->
+  <section class="section credo" id="credo">
+    <div class="container">
+      <h2 class="section__title reveal">
+        <span class="section__title-text">Педагогическое кредо</span>
+        <span class="section__title-line"></span>
+      </h2>
+      <div class="credo__content reveal">
+        <div class="credo__quote-mark">
+          <span class="material-icons">format_quote</span>
+        </div>
+        <p class="credo__text"><%= content.credo.text %></p>
+        <% if (content.credo.quote) { %>
+          <blockquote class="credo__blockquote">
+            <p>&laquo;<%= content.credo.quote %>&raquo;</p>
+            <% if (content.credo.quoteAuthor) { %>
+              <cite>&mdash; <%= content.credo.quoteAuthor %></cite>
+            <% } %>
+          </blockquote>
+        <% } %>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ACHIEVEMENTS SECTION ============ -->
+  <section class="section achievements" id="achievements">
+    <div class="container">
+      <h2 class="section__title reveal">
+        <span class="section__title-text">Достижения</span>
+        <span class="section__title-line"></span>
+      </h2>
+      <% if (content.achievements && content.achievements.length > 0) { %>
+        <div class="achievements__grid">
+          <% content.achievements.forEach(function(achievement, index) { %>
+            <div class="achievement-card reveal" style="transition-delay: <%= index * 0.1 %>s;">
+              <% if (achievement.year) { %>
+                <div class="achievement-card__year-badge"><%= achievement.year %></div>
+              <% } %>
+              <div class="achievement-card__media">
+                <% if (achievement.photo) { %>
+                  <img src="<%= achievement.photo %>" alt="<%= achievement.title %>" class="achievement-card__photo">
+                <% } else { %>
+                  <div class="achievement-card__photo-placeholder photo-placeholder">
+                    <span class="material-icons">emoji_events</span>
+                  </div>
+                <% } %>
+              </div>
+              <div class="achievement-card__body">
+                <h3 class="achievement-card__title"><%= achievement.title %></h3>
+                <p class="achievement-card__description"><%= achievement.description %></p>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      <% } %>
+    </div>
+  </section>
+
+  <!-- ============ METHODS SECTION ============ -->
+  <section class="section methods" id="methods">
+    <div class="container">
+      <h2 class="section__title reveal">
+        <span class="section__title-text">Методики</span>
+        <span class="section__title-line"></span>
+      </h2>
+      <% if (content.methods && content.methods.length > 0) { %>
+        <div class="methods__grid">
+          <% content.methods.forEach(function(method, index) { %>
+            <div class="method-card reveal" style="transition-delay: <%= index * 0.1 %>s;">
+              <div class="method-card__icon-wrapper">
+                <span class="material-icons"><%= method.icon %></span>
+              </div>
+              <h3 class="method-card__title"><%= method.title %></h3>
+              <p class="method-card__description"><%= method.description %></p>
+              <div class="method-card__ripple"></div>
+            </div>
+          <% }); %>
+        </div>
+      <% } %>
+    </div>
+  </section>
+
+  <!-- ============ GALLERY SECTION ============ -->
+  <section class="section gallery" id="gallery">
+    <div class="container">
+      <h2 class="section__title reveal">
+        <span class="section__title-text">Галерея</span>
+        <span class="section__title-line"></span>
+      </h2>
+      <% if (content.gallery && content.gallery.length > 0) { %>
+        <div class="gallery__grid">
+          <% content.gallery.forEach(function(item, index) { %>
+            <div class="gallery__item reveal" style="transition-delay: <%= (index % 6) * 0.08 %>s;">
+              <% if (item.photo) { %>
+                <img src="<%= item.photo %>" alt="<%= item.caption || '' %>" class="gallery__photo" data-lightbox="true" data-caption="<%= item.caption || '' %>">
+              <% } else { %>
+                <div class="gallery__photo-placeholder photo-placeholder">
+                  <span class="material-icons">photo_camera</span>
+                </div>
+              <% } %>
+              <% if (item.caption) { %>
+                <div class="gallery__caption">
+                  <span><%= item.caption %></span>
+                </div>
+              <% } %>
+            </div>
+          <% }); %>
+        </div>
+      <% } %>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox__close" id="lightboxClose" aria-label="Закрыть">
+      <span class="material-icons">close</span>
+    </button>
+    <div class="lightbox__content">
+      <img src="" alt="" class="lightbox__image" id="lightboxImage">
+      <p class="lightbox__caption" id="lightboxCaption"></p>
+    </div>
+  </div>
+
+  <!-- ============ TESTIMONIALS SECTION ============ -->
+  <section class="section testimonials" id="testimonials">
+    <div class="container">
+      <h2 class="section__title reveal">
+        <span class="section__title-text">Отзывы</span>
+        <span class="section__title-line"></span>
+      </h2>
+      <% if (content.testimonials && content.testimonials.length > 0) { %>
+        <div class="testimonials__grid">
+          <% content.testimonials.forEach(function(testimonial, index) { %>
+            <div class="testimonial-card reveal" style="transition-delay: <%= index * 0.12 %>s;">
+              <div class="testimonial-card__header">
+                <div class="testimonial-card__avatar-wrapper">
+                  <% if (testimonial.photo) { %>
+                    <img src="<%= testimonial.photo %>" alt="<%= testimonial.name %>" class="testimonial-card__avatar">
+                  <% } else { %>
+                    <div class="testimonial-card__avatar-placeholder">
+                      <span class="material-icons">person</span>
+                    </div>
+                  <% } %>
+                </div>
+                <div class="testimonial-card__info">
+                  <h4 class="testimonial-card__name"><%= testimonial.name %></h4>
+                  <p class="testimonial-card__role"><%= testimonial.role %></p>
+                </div>
+              </div>
+              <div class="testimonial-card__body">
+                <span class="material-icons testimonial-card__quote-icon">format_quote</span>
+                <p class="testimonial-card__text"><%= testimonial.text %></p>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      <% } %>
+    </div>
+  </section>
+
+  <!-- ============ CONTACTS SECTION ============ -->
+  <section class="section contacts" id="contacts">
+    <div class="container">
+      <h2 class="section__title reveal">
+        <span class="section__title-text">Контакты</span>
+        <span class="section__title-line"></span>
+      </h2>
+      <div class="contacts__wrapper reveal">
+        <div class="contacts__card">
+          <h3 class="contacts__card-title">Связаться со мной</h3>
+
+          <div class="contacts__info-list">
+            <% if (content.contacts.email) { %>
+              <a href="mailto:<%= content.contacts.email %>" class="contacts__info-item">
+                <span class="material-icons">email</span>
+                <span><%= content.contacts.email %></span>
+              </a>
+            <% } %>
+            <% if (content.contacts.phone) { %>
+              <a href="tel:<%= content.contacts.phone %>" class="contacts__info-item">
+                <span class="material-icons">phone</span>
+                <span><%= content.contacts.phone %></span>
+              </a>
+            <% } %>
+            <% if (content.contacts.address) { %>
+              <div class="contacts__info-item">
+                <span class="material-icons">location_on</span>
+                <span><%= content.contacts.address %></span>
+              </div>
+            <% } %>
+          </div>
+
+          <% if ((content.contacts.social && (content.contacts.social.vk || content.contacts.social.telegram || content.contacts.social.youtube))) { %>
+            <div class="contacts__social">
+              <h4 class="contacts__social-title">Социальные сети</h4>
+              <div class="contacts__social-buttons">
+                <% if (content.contacts.social.vk) { %>
+                  <a href="<%= content.contacts.social.vk %>" class="social-btn social-btn--vk" target="_blank" rel="noopener noreferrer" aria-label="ВКонтакте">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M21.547 7.002h-3.37a.478.478 0 0 0-.39.208c-.079.114-1.94 2.607-2.788 3.627-.284.342-.523.39-.662.276-.195-.16-.148-.585-.148-.585s.018-1.878.018-3.12c0-.473.007-.998-.37-1.355a1.525 1.525 0 0 0-.858-.355c-.373-.042-1.074-.067-2.072-.067-1.314 0-2.197.01-2.792.334-.253.138-.492.392-.362.407.16.019.52.098.712.36.248.34.24 1.103.24 1.103s.142 3.17-.332 3.563c-.326.27-.773-.28-1.735-1.642L5.93 7.555a.45.45 0 0 0-.372-.236H2.264c-.39 0-.46.188-.46.188s-.554 1.433 2.44 5.005c1.634 1.93 3.727 3.078 5.674 3.078h1.31c.453 0 .543-.197.543-.197s.064-.706.605-.6c.505.1 1.63 1.273 2.488 1.866.663.457 1.08.526 1.08.526l2.4.034c.766 0 .603-.547.603-.547s-.07-.326-.592-1.078c-.434-.627-1.07-1.396-1.455-1.836-.398-.452-.316-.52.004-.965 0 0 2.416-3.252 2.68-4.408.06-.192 0-.397-.48-.397z"/></svg>
+                    <span>ВКонтакте</span>
+                  </a>
+                <% } %>
+                <% if (content.contacts.social.telegram) { %>
+                  <a href="<%= content.contacts.social.telegram %>" class="social-btn social-btn--telegram" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    <span>Telegram</span>
+                  </a>
+                <% } %>
+                <% if (content.contacts.social.youtube) { %>
+                  <a href="<%= content.contacts.social.youtube %>" class="social-btn social-btn--youtube" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    <span>YouTube</span>
+                  </a>
+                <% } %>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__content">
+        <p class="footer__copyright">&copy; <%= new Date().getFullYear() %> <%= content.hero.name %>. Все права защищены.</p>
+        <p class="footer__subtitle">Учитель года</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Наверх">
+    <span class="material-icons">keyboard_arrow_up</span>
+  </button>
+
+  <!-- JavaScript -->
+  <script src="/js/main.js"></script>
+</body>
+</html>

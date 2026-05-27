@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Админ-панель — Учитель года</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="<%= page === 'login' ? 'login-page' : 'dashboard-page' %>">
+
+<% if (page === 'login') { %>
+<!-- ===================== LOGIN PAGE ===================== -->
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="login-header">
+      <span class="material-icons login-icon">school</span>
+      <h1>Учитель года</h1>
+      <p>Вход в панель управления</p>
+    </div>
+    <% if (error) { %>
+      <div class="login-error">
+        <span class="material-icons">error_outline</span>
+        <%= error %>
+      </div>
+    <% } %>
+    <form action="/admin/login" method="POST" class="login-form">
+      <div class="md-field">
+        <span class="material-icons md-field-icon">person</span>
+        <input type="text" id="username" name="username" required placeholder=" ">
+        <label for="username">Имя пользователя</label>
+      </div>
+      <div class="md-field">
+        <span class="material-icons md-field-icon">lock</span>
+        <input type="password" id="password" name="password" required placeholder=" ">
+        <label for="password">Пароль</label>
+      </div>
+      <button type="submit" class="btn btn-primary btn-login">
+        <span class="material-icons">login</span>
+        Войти
+      </button>
+    </form>
+  </div>
+</div>
+
+<% } else { %>
+<!-- ===================== DASHBOARD ===================== -->
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <span class="material-icons">school</span>
+    <span class="sidebar-title">Админ-панель</span>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="#section-site-settings" class="sidebar-link active" data-section="section-site-settings">
+      <span class="material-icons">settings</span> Настройки сайта
+    </a>
+    <a href="#section-hero" class="sidebar-link" data-section="section-hero">
+      <span class="material-icons">home</span> Главный экран
+    </a>
+    <a href="#section-about" class="sidebar-link" data-section="section-about">
+      <span class="material-icons">person</span> Обо мне
+    </a>
+    <a href="#section-credo" class="sidebar-link" data-section="section-credo">
+      <span class="material-icons">format_quote</span> Кредо
+    </a>
+    <a href="#section-achievements" class="sidebar-link" data-section="section-achievements">
+      <span class="material-icons">emoji_events</span> Достижения
+    </a>
+    <a href="#section-methods" class="sidebar-link" data-section="section-methods">
+      <span class="material-icons">menu_book</span> Методики
+    </a>
+    <a href="#section-gallery" class="sidebar-link" data-section="section-gallery">
+      <span class="material-icons">photo_library</span> Галерея
+    </a>
+    <a href="#section-testimonials" class="sidebar-link" data-section="section-testimonials">
+      <span class="material-icons">rate_review</span> Отзывы
+    </a>
+    <a href="#section-contacts" class="sidebar-link" data-section="section-contacts">
+      <span class="material-icons">contacts</span> Контакты
+    </a>
+  </nav>
+</aside>
+
+<!-- Main area -->
+<div class="main-wrapper">
+  <!-- Top header -->
+  <header class="top-header">
+    <button class="sidebar-toggle" id="sidebar-toggle">
+      <span class="material-icons">menu</span>
+    </button>
+    <h1 class="header-title">Панель управления</h1>
+    <div class="header-actions">
+      <a href="/" target="_blank" class="btn btn-outline btn-sm">
+        <span class="material-icons">visibility</span> Просмотр сайта
+      </a>
+      <a href="/admin/logout" class="btn btn-outline btn-sm btn-logout">
+        <span class="material-icons">logout</span> Выйти
+      </a>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="content" id="content">
+
+    <!-- ======== SITE SETTINGS ======== -->
+    <section class="admin-section" id="section-site-settings">
+      <div class="section-card">
+        <div class="section-header">
+          <span class="material-icons">settings</span>
+          <h2>Настройки сайта</h2>
+        </div>
+        <div class="section-body">
+          <div class="md-field">
+            <input type="text" id="site-title" value="<%= content.siteSettings ? content.siteSettings.title || '' : '' %>" placeholder=" ">
+            <label for="site-title">Заголовок сайта</label>
+          </div>
+          <div class="md-field">
+            <textarea id="site-meta" rows="3" placeholder=" "><%= content.siteSettings ? content.siteSettings.metaDescription || '' : '' %></textarea>
+            <label for="site-meta">Мета-описание (SEO)</label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== HERO ======== -->
+    <section class="admin-section" id="section-hero">
+      <div class="section-card">
+        <div class="section-header">
+          <span class="material-icons">home</span>
+          <h2>Главный экран</h2>
+        </div>
+        <div class="section-body">
+          <div class="form-row">
+            <div class="md-field flex-1">
+              <input type="text" id="hero-name" value="<%= content.hero ? content.hero.name || '' : '' %>" placeholder=" ">
+              <label for="hero-name">Имя</label>
+            </div>
+            <div class="md-field flex-1">
+              <input type="text" id="hero-title" value="<%= content.hero ? content.hero.title || '' : '' %>" placeholder=" ">
+              <label for="hero-title">Должность / Звание</label>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="md-field flex-1">
+              <input type="text" id="hero-school" value="<%= content.hero ? content.hero.school || '' : '' %>" placeholder=" ">
+              <label for="hero-school">Школа / Учебное заведение</label>
+            </div>
+            <div class="md-field flex-1">
+              <input type="text" id="hero-experience" value="<%= content.hero ? content.hero.experience || '' : '' %>" placeholder=" ">
+              <label for="hero-experience">Стаж работы</label>
+            </div>
+          </div>
+          <div class="md-field">
+            <textarea id="hero-motto" rows="3" placeholder=" "><%= content.hero ? content.hero.motto || '' : '' %></textarea>
+            <label for="hero-motto">Девиз</label>
+          </div>
+          <div class="photo-upload-group">
+            <label class="upload-label">Фото</label>
+            <div class="photo-upload-area">
+              <div class="photo-preview" id="hero-photo-preview">
+                <% if (content.hero && content.hero.photo) { %>
+                  <img src="<%= content.hero.photo %>" alt="Preview">
+                <% } else { %>
+                  <span class="material-icons">add_a_photo</span>
+                <% } %>
+              </div>
+              <input type="hidden" id="hero-photo-path" value="<%= content.hero ? content.hero.photo || '' : '' %>">
+              <label class="btn btn-outline btn-upload">
+                <span class="material-icons">upload</span> Загрузить фото
+                <input type="file" accept="image/*" class="file-input" data-target="hero-photo">
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== ABOUT ======== -->
+    <section class="admin-section" id="section-about">
+      <div class="section-card">
+        <div class="section-header">
+          <span class="material-icons">person</span>
+          <h2>Обо мне</h2>
+        </div>
+        <div class="section-body">
+          <div class="md-field">
+            <textarea id="about-text" rows="6" placeholder=" "><%= content.about ? content.about.text || '' : '' %></textarea>
+            <label for="about-text">Основной текст</label>
+          </div>
+          <div class="form-row">
+            <div class="md-field flex-1">
+              <input type="text" id="about-education" value="<%= content.about ? content.about.education || '' : '' %>" placeholder=" ">
+              <label for="about-education">Образование</label>
+            </div>
+            <div class="md-field flex-1">
+              <input type="text" id="about-specialization" value="<%= content.about ? content.about.specialization || '' : '' %>" placeholder=" ">
+              <label for="about-specialization">Специализация</label>
+            </div>
+          </div>
+          <div class="md-field">
+            <input type="text" id="about-category" value="<%= content.about ? content.about.category || '' : '' %>" placeholder=" ">
+            <label for="about-category">Категория</label>
+          </div>
+          <div class="photo-upload-group">
+            <label class="upload-label">Фото</label>
+            <div class="photo-upload-area">
+              <div class="photo-preview" id="about-photo-preview">
+                <% if (content.about && content.about.photo) { %>
+                  <img src="<%= content.about.photo %>" alt="Preview">
+                <% } else { %>
+                  <span class="material-icons">add_a_photo</span>
+                <% } %>
+              </div>
+              <input type="hidden" id="about-photo-path" value="<%= content.about ? content.about.photo || '' : '' %>">
+              <label class="btn btn-outline btn-upload">
+                <span class="material-icons">upload</span> Загрузить фото
+                <input type="file" accept="image/*" class="file-input" data-target="about-photo">
+              </label>
+            </div>
+          </div>
+
+          <!-- Highlights -->
+          <div class="subsection">
+            <h3 class="subsection-title">
+              <span class="material-icons">star</span> Ключевые показатели
+            </h3>
+            <div class="highlights-grid" id="highlights-container">
+              <% 
+                var highlights = (content.about && content.about.highlights) ? content.about.highlights : [];
+                for (var hi = 0; hi < 4; hi++) {
+                  var h = highlights[hi] || { icon: '', label: '', value: '' };
+              %>
+              <div class="highlight-item">
+                <div class="md-field">
+                  <input type="text" class="highlight-icon" value="<%= h.icon %>" placeholder=" ">
+                  <label>Иконка (Material Icon)</label>
+                </div>
+                <div class="md-field">
+                  <input type="text" class="highlight-label" value="<%= h.label %>" placeholder=" ">
+                  <label>Подпись</label>
+                </div>
+                <div class="md-field">
+                  <input type="text" class="highlight-value" value="<%= h.value %>" placeholder=" ">
+                  <label>Значение</label>
+                </div>
+              </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== CREDO ======== -->
+    <section class="admin-section" id="section-credo">
+      <div class="section-card">
+        <div class="section-header">
+          <span class="material-icons">format_quote</span>
+          <h2>Педагогическое кредо</h2>
+        </div>
+        <div class="section-body">
+          <div class="md-field">
+            <textarea id="credo-text" rows="5" placeholder=" "><%= content.credo ? content.credo.text || '' : '' %></textarea>
+            <label for="credo-text">Текст кредо</label>
+          </div>
+          <div class="md-field">
+            <textarea id="credo-quote" rows="3" placeholder=" "><%= content.credo ? content.credo.quote || '' : '' %></textarea>
+            <label for="credo-quote">Цитата</label>
+          </div>
+          <div class="md-field">
+            <input type="text" id="credo-author" value="<%= content.credo ? content.credo.quoteAuthor || '' : '' %>" placeholder=" ">
+            <label for="credo-author">Автор цитаты</label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== ACHIEVEMENTS ======== -->
+    <section class="admin-section" id="section-achievements">
+      <div class="section-card">
+        <div class="section-header">
+          <span class="material-icons">emoji_events</span>
+          <h2>Достижения</h2>
+        </div>
+        <div class="section-body">
+          <div class="dynamic-list" id="achievements-list">
+            <% 
+              var achievements = content.achievements || [];
+              achievements.forEach(function(item, idx) {
+            %>
+            <div class="dynamic-item" data-index="<%= idx %>">
+              <div class="dynamic-item-header">
+                <span class="item-number">Достижение #<%= idx + 1 %></span>
+                <button type="button" class="btn btn-icon btn-delete" onclick="removeDynamicItem(this)" title="Удалить">
+                  <span class="material-icons">delete</span>
+                </button>
+              </div>
+              <div class="dynamic-item-body">
+                <div class="form-row">
+                  <div class="md-field flex-2">
+                    <input type="text" class="achievement-title" value="<%= item.title || '' %>" placeholder=" ">
+                    <label>Название</label>
+                  </div>
+                  <div class="md-field flex-1">
+                    <input type="text" class="achievement-year" value="<%= item.year || '' %>" placeholder=" ">
+                    <label>Год</label>
+                  </div>
+                </div>
+                <div class="md-field">
+                  <textarea class="achievement-description" rows="3" placeholder=" "><%= item.description || '' %></textarea>
+                  <label>Описание</label>
+                </div>
+                <div class="photo-upload-group">
+                  <div class="photo-upload-area">
+                    <div class="photo-preview achievement-photo-preview">
+                      <% if (item.photo) { %>
+                        <img src="<%= item.photo %>" alt="Preview">
+                      <% } else { %>
+                        <span class="material-icons">add_a_photo</span>
+                      <% } %>
+                    </div>
+                    <input type="hidden" class="achievement-photo-path" value="<%= item.photo || '' %>">
+                    <label class="btn btn-outline btn-upload">
+                      <span class="material-icons">upload</span> Загрузить
+                      <input type="file" accept="image/*" class="file-input" data-target="achievement-photo" data-index="<%= idx %>">
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% }); %>
+          </div>
+          <button type="button" class="btn btn-add" onclick="addAchievement()">
+            <span class="material-icons">add_circle</span> Добавить достижение
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== METHODS ======== -->
+    <section class="admin-section" id="section-methods">
+      <div class="section-card">
+        <div class="section-header">
+          <span class="material-icons">menu_book</span>
+          <h2>Методики</h2>
+        </div>
+        <div class="section-body">
+          <div class="dynamic-list" id="methods-list">
+            <% 
+              var methods = content.methods || [];
+              methods.forEach(function(item, idx) {
+            %>
+            <div class="dynamic-item" data-index="<%= idx %>">
+              <div class="dynamic-item-header">
+                <span class="item-number">Методика #<%= idx + 1 %></span>
+                <button type="button" class="btn btn-icon btn-delete" onclick="removeDynamicItem(this)" title="Удалить">
+                  <span class="material-icons">delete</span>
+                </button>
+              </div>
+              <div class="dynamic-item-body">
+                <div class="form-row">
+                  <div class="md-field flex-2">
+                    <input type="text" class="method-title" value="<%= item.title || '' %>" placeholder=" ">
+                    <label>Название</label>
+                  </div>
+                  <div class="md-field flex-1">
+                    <input type="text" class="method-icon" value="<%= item.icon || '' %>" placeholder=" ">
+                    <label>Иконка (Material Icon)</label>
+                  </div>
+                </div>
+                <div class="md-field">
+                  <textarea class="method-description" rows="3" placeholder=" "><%= item.description || '' %></textarea>
+                  <label>Описание</label>
+                </div>
+              </div>
+            </div>
+            <% }); %>
+          </div>
+          <button type="button" class="btn btn-add" onclick="addMethod()">
+            <span class="material-icons">add_circle</span> Добавить методику
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== GALLERY ======== -->
+    <section class="admin-section" id="section-gallery">
+      <div class="section-card">
+        <div class="section-header">
+          <span class="material-icons">photo_library</span>
+          <h2>Галерея</h2>
+        </div>
+        <div class="section-body">
+          <div class="dynamic-list gallery-grid" id="gallery-list">
+            <% 
+              var gallery = content.gallery || [];
+              gallery.forEach(function(item, idx) {
+            %>
+            <div class="dynamic-item gallery-item" data-index="<%= idx %>">
+              <div class="dynamic-item-header">
+                <span class="item-number">Фото #<%= idx + 1 %></span>
+                <button type="button" class="btn btn-icon btn-delete" onclick="removeDynamicItem(this)" title="Удалить">
+                  <span class="material-icons">delete</span>
+                </button>
+              </div>
+              <div class="dynamic-item-body">
+                <div class="photo-upload-group">
+                  <div class="photo-upload-area">
+                    <div class="photo-preview gallery-photo-preview">
+                      <% if (item.photo) { %>
+                        <img src="<%= item.photo %>" alt="Preview">
+                      <% } else { %>
+                        <span class="material-icons">add_a_photo</span>
+                      <% } %>
+                    </div>
+                    <input type="hidden" class="gallery-photo-path" value="<%= item.photo || '' %>">
+                    <label class="btn btn-outline btn-upload">
+                      <span class="material-icons">upload</span> Загрузить
+                      <input type="file" accept="image/*" class="file-input" data-target="gallery-photo" data-index="<%= idx %>">
+                    </label>
+                  </div>
+                </div>
+                <div class="md-field">
+                  <input type="text" class="gallery-caption" value="<%= item.caption || '' %>" placeholder=" ">
+                  <label>Подпись</label>
+                </div>
+              </div>
+            </div>
+            <% }); %>
+          </div>
+          <button type="button" class="btn btn-add" onclick="addGalleryItem()">
+            <span class="material-icons">add_circle</span> Добавить фото
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== TESTIMONIALS ======== -->
+    <section class="admin-section" id="section-testimonials">
+      <div class="section-card">
+        <div class="section-header">
+          <span class="material-icons">rate_review</span>
+          <h2>Отзывы</h2>
+        </div>
+        <div class="section-body">
+          <div class="dynamic-list" id="testimonials-list">
+            <% 
+              var testimonials = content.testimonials || [];
+              testimonials.forEach(function(item, idx) {
+            %>
+            <div class="dynamic-item" data-index="<%= idx %>">
+              <div class="dynamic-item-header">
+                <span class="item-number">Отзыв #<%= idx + 1 %></span>
+                <button type="button" class="btn btn-icon btn-delete" onclick="removeDynamicItem(this)" title="Удалить">
+                  <span class="material-icons">delete</span>
+                </button>
+              </div>
+              <div class="dynamic-item-body">
+                <div class="form-row">
+                  <div class="md-field flex-1">
+                    <input type="text" class="testimonial-name" value="<%= item.name || '' %>" placeholder=" ">
+                    <label>Имя</label>
+                  </div>
+                  <div class="md-field flex-1">
+                    <input type="text" class="testimonial-role" value="<%= item.role || '' %>" placeholder=" ">
+                    <label>Должность / Роль</label>
+                  </div>
+                </div>
+                <div class="md-field">
+                  <textarea class="testimonial-text" rows="4" placeholder=" "><%= item.text || '' %></textarea>
+                  <label>Текст отзыва</label>
+                </div>
+                <div class="photo-upload-group">
+                  <div class="photo-upload-area">
+                    <div class="photo-preview testimonial-photo-preview">
+                      <% if (item.photo) { %>
+                        <img src="<%= item.photo %>" alt="Preview">
+                      <% } else { %>
+                        <span class="material-icons">add_a_photo</span>
+                      <% } %>
+                    </div>
+                    <input type="hidden" class="testimonial-photo-path" value="<%= item.photo || '' %>">
+                    <label class="btn btn-outline btn-upload">
+                      <span class="material-icons">upload</span> Загрузить
+                      <input type="file" accept="image/*" class="file-input" data-target="testimonial-photo" data-index="<%= idx %>">
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% }); %>
+          </div>
+          <button type="button" class="btn btn-add" onclick="addTestimonial()">
+            <span class="material-icons">add_circle</span> Добавить отзыв
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== CONTACTS ======== -->
+    <section class="admin-section" id="section-contacts">
+      <div class="section-card">
+        <div class="section-header">
+          <span class="material-icons">contacts</span>
+          <h2>Контакты</h2>
+        </div>
+        <div class="section-body">
+          <div class="form-row">
+            <div class="md-field flex-1">
+              <input type="email" id="contact-email" value="<%= content.contacts ? content.contacts.email || '' : '' %>" placeholder=" ">
+              <label for="contact-email">Email</label>
+            </div>
+            <div class="md-field flex-1">
+              <input type="tel" id="contact-phone" value="<%= content.contacts ? content.contacts.phone || '' : '' %>" placeholder=" ">
+              <label for="contact-phone">Телефон</label>
+            </div>
+          </div>
+          <div class="md-field">
+            <input type="text" id="contact-address" value="<%= content.contacts ? content.contacts.address || '' : '' %>" placeholder=" ">
+            <label for="contact-address">Адрес</label>
+          </div>
+          <div class="subsection">
+            <h3 class="subsection-title">
+              <span class="material-icons">share</span> Социальные сети
+            </h3>
+            <div class="form-row">
+              <div class="md-field flex-1">
+                <input type="url" id="social-vk" value="<%= (content.contacts && content.contacts.social) ? content.contacts.social.vk || '' : '' %>" placeholder=" ">
+                <label for="social-vk">ВКонтакте</label>
+              </div>
+              <div class="md-field flex-1">
+                <input type="text" id="social-telegram" value="<%= (content.contacts && content.contacts.social) ? content.contacts.social.telegram || '' : '' %>" placeholder=" ">
+                <label for="social-telegram">Telegram</label>
+              </div>
+            </div>
+            <div class="md-field">
+              <input type="url" id="social-youtube" value="<%= (content.contacts && content.contacts.social) ? content.contacts.social.youtube || '' : '' %>" placeholder=" ">
+              <label for="social-youtube">YouTube</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Sticky save bar -->
+  <div class="save-bar" id="save-bar">
+    <button type="button" class="btn btn-save" id="btn-save" onclick="saveAllContent()">
+      <span class="material-icons">save</span>
+      💾 Сохранить все изменения
+    </button>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div class="toast-container" id="toast-container"></div>
+
+<% } %>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>
